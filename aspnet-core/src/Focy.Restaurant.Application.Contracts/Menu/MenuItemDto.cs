@@ -11,7 +11,8 @@ namespace Focy.Restaurant.Menu
     {
         public string Name { get; set; }
         public string? Description { get; set; }
-        public string Uri { get; set; }
+        public string? ImgUri { get; set; }
+        public string? Uri { get; set; }
         public bool IsAvailable { get; set; }
     }
 }
