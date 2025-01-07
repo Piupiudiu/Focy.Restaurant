@@ -96,7 +96,7 @@ public class RestaurantHttpApiHostModule : AbpModule
     {
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
-            options.ConventionalControllers.Create(typeof(RestaurantApplicationModule).Assembly);
+            //options.ConventionalControllers.Create(typeof(RestaurantApplicationModule).Assembly);
         });
     }
 

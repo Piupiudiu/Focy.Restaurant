@@ -77,7 +77,7 @@ public class RestaurantAuthServerModule : AbpModule
 
             PreConfigure<OpenIddictServerBuilder>(serverBuilder =>
             {
-                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", "85a4e623-cc03-44b5-9d0f-ca996047226a");
+                serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", "803f811b-3c71-4ac0-a145-7970554dcdbe");
             });
         }
     }

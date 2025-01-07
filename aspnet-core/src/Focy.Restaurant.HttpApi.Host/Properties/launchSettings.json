@@ -3,8 +3,8 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44322",
-      "sslPort": 44322
+      "applicationUrl": "https://localhost:44366",
+      "sslPort": 44366
     }
   },
   "profiles": {
@@ -18,7 +18,7 @@
     "Focy.Restaurant.HttpApi.Host": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:44322",
+      "applicationUrl": "https://localhost:44366",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
