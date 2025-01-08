@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Domain.ChangeTracking;
 
 namespace Focy.Restaurant.ShoppingCart
 {
@@ -29,6 +30,7 @@ namespace Focy.Restaurant.ShoppingCart
             return true;
         }
 
+        [DisableEntityChangeTracking]
         public async Task<List<ShoppingCartItemDto>> GetAllShoppingCartItemsAsync()
         {
             return [.. (from sc in await shoppingCartRepository.GetQueryableAsync()

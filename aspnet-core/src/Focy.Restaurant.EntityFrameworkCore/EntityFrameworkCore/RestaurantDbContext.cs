@@ -53,6 +53,8 @@ public class RestaurantDbContext :
 
     public DbSet<Menu.Menu> Menus { get; set; }
     public DbSet<ShoppingCart.ShoppingCart> ShoppingCarts { get; set; }
+    public DbSet<Order.Order> Orders { get; set; }
+    public DbSet<Order.OrderItem> OrderItems { get; set; }
 
     #endregion
 
