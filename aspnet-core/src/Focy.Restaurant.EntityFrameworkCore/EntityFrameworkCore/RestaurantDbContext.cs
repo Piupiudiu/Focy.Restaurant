@@ -52,6 +52,7 @@ public class RestaurantDbContext :
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     public DbSet<Menu.Menu> Menus { get; set; }
+    public DbSet<ShoppingCart.ShoppingCart> ShoppingCarts { get; set; }
 
     #endregion
 
