@@ -12,7 +12,8 @@
     "antd-mobile": "^5.38.1",
     "antd-mobile-icons": "^0.3.0",
     "react-oauth2-code-pkce": "^1.22.2",
-    "umi": "^4.4.4"
+    "umi": "^4.4.4",
+    "umi-request": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

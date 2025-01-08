@@ -39,7 +39,7 @@ public class RestaurantApplicationModule : AbpModule
             {
                 container.UseFileSystem(fileSystem =>
                 {
-                    fileSystem.BasePath = Path.Combine(AppContext.BaseDirectory + "wwwwroot/");
+                    fileSystem.BasePath = Path.Combine(AppContext.BaseDirectory + "wwwroot/");
                 });
             });
         });

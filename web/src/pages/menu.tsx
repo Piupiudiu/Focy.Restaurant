@@ -1,16 +1,30 @@
-import { useContext } from "react";
-import { AuthContext, IAuthContext } from "react-oauth2-code-pkce";
+import { getMenuList, MenuItemDto } from "@/services/menu";
+import { Grid } from "antd-mobile";
+import { useEffect, useState } from "react";
 
 export default function MenuPage() {
-  const { token, tokenData } = useContext<IAuthContext>(AuthContext)
+  const [menuList, setMenuList] = useState<MenuItemDto[]>([]);
+
+  useEffect(() => {
+    getMenuList().then(res => {
+      setMenuList(res.items);
+    })
+  }, []);
+
   return (
-    <div>
-      <h2>Yay! Welcome to menu!</h2>
-      <p>
-        To get started, edit <code>pages/index.tsx</code> and save to reload.
-      </p>
-      <h4>User Information from JWT</h4>
-      <pre>{JSON.stringify(tokenData, null, 2)}</pre>
-    </div>
+    <>
+      <Grid columns={2} gap={8}>
+        {
+          menuList.map(item => (
+            <Grid.Item key={item.id}>
+              <div>
+                <img src={`https://localhost:44366/${item.imgUri ?? ''}`} alt="" style={{width: '100%', height: 'auto', objectFit: 'contain'}} />
+                <div>{item.name}</div>
+              </div>
+            </Grid.Item>
+          ))
+        }
+      </Grid>
+    </>
   );
 }

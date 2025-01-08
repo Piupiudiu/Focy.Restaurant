@@ -31,6 +31,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.Extensions.FileProviders;
 
 namespace Focy.Restaurant;
 
@@ -188,6 +189,19 @@ public class RestaurantHttpApiHostModule : AbpModule
 
         app.UseAbpRequestLocalization();
         app.UseCorrelationId();
+
+        if (env.IsDevelopment())
+        {
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "wwwroot"))
+            });
+        }
+        else
+        {
+            app.UseStaticFiles();
+        }
+
         app.MapAbpStaticAssets();
         app.UseRouting();
         app.UseCors();

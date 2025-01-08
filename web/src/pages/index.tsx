@@ -1,10 +1,10 @@
 import { Link, Outlet } from 'umi';
 import styles from '../layouts/index.less';
 import { TabBar } from 'antd-mobile';
-import { FC, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { FileOutline, HandPayCircleOutline, ShopbagOutline, UserOutline } from 'antd-mobile-icons';
 import { history, useLocation } from 'umi';
-import { AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } from 'react-oauth2-code-pkce';
+import { AuthContext, AuthProvider, IAuthContext, TAuthConfig, TRefreshTokenExpiredEvent } from 'react-oauth2-code-pkce';
 
 const authConfig: TAuthConfig = {
   clientId: 'Restaurant_Web',
@@ -53,6 +53,8 @@ const Bottom: FC = () => {
   )
 }
 export default function HomePage() {
+  const { token, tokenData } = useContext<IAuthContext>(AuthContext)
+  
   useEffect(() => {
     history.push('/menu')
   }, []);
