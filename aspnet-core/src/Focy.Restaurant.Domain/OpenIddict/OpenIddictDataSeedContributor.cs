@@ -102,6 +102,30 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 clientUri: swaggerRootUrl
             );
         }
+        // Web
+        var webClientId = configurationSection["Restaurant_Web:ClientId"];
+        if (!webClientId.IsNullOrWhiteSpace())
+        {
+            var configurationRootUrl = configurationSection["Restaurant_Web:RootUrl"]?.TrimEnd('/');
+
+            await CreateApplicationAsync(
+                name: webClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "Restaurant Web",
+                secret: null,
+                grantTypes: new List<string> //Hybrid flow
+                {
+                    OpenIddictConstants.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.GrantTypes.RefreshToken,
+                },
+                scopes: commonScopes,
+                redirectUri: configurationRootUrl,
+                clientUri: configurationRootUrl,
+                postLogoutRedirectUri: configurationRootUrl,
+                requirePKCE: true
+            );
+        }
     }
 
     private async Task CreateApplicationAsync(
@@ -115,7 +139,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         string? clientUri = null,
         string? redirectUri = null,
         string? postLogoutRedirectUri = null,
-        List<string>? permissions = null)
+        List<string>? permissions = null,
+        bool requirePKCE = false)
     {
         if (!string.IsNullOrEmpty(secret) && string.Equals(type, OpenIddictConstants.ClientTypes.Public,
                 StringComparison.OrdinalIgnoreCase))
@@ -139,6 +164,11 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             DisplayName = displayName,
             ClientUri = clientUri,
         };
+
+        if (requirePKCE)
+        {
+            application.Requirements.Add(OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange);
+        }
 
         Check.NotNullOrEmpty(grantTypes, nameof(grantTypes));
         Check.NotNullOrEmpty(scopes, nameof(scopes));

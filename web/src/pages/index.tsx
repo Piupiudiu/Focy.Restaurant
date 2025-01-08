@@ -1,15 +1,75 @@
-import yayJpg from '../assets/yay.jpg';
+import { Link, Outlet } from 'umi';
+import styles from '../layouts/index.less';
+import { TabBar } from 'antd-mobile';
+import { FC, useEffect } from 'react';
+import { FileOutline, HandPayCircleOutline, ShopbagOutline, UserOutline } from 'antd-mobile-icons';
+import { history, useLocation } from 'umi';
+import { AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } from 'react-oauth2-code-pkce';
 
-export default function HomePage() {
+const authConfig: TAuthConfig = {
+  clientId: 'Restaurant_Web',
+  authorizationEndpoint: 'https://localhost:44382/connect/authorize',
+  tokenEndpoint: 'https://localhost:44382/connect/token',
+  redirectUri: 'http://localhost:8000',
+  scope: 'Restaurant offline_access',
+  onRefreshTokenExpire: (event: TRefreshTokenExpiredEvent) => event.logIn(undefined, undefined, "popup"),
+}
+
+const Bottom: FC = () => {
+  const location = useLocation()
+
+  const setRouteActive = (value: string) => {
+    history.push(value)
+  }
+  const tabs = [
+    {
+      key: '/menu',
+      title: '菜单',
+      icon: <FileOutline />,
+    },
+    {
+      key: '/shopping-cart',
+      title: '购物车',
+      icon: <ShopbagOutline />,
+    },
+    {
+      key: '/order',
+      title: '订单',
+      icon: <HandPayCircleOutline />,
+    },
+    // {
+    //   key: '/me',
+    //   title: '我的',
+    //   icon: <UserOutline />,
+    // },
+  ]
+
   return (
-    <div>
-      <h2>Yay! Welcome to umi!</h2>
-      <p>
-        <img src={yayJpg} width="388" />
-      </p>
-      <p>
-        To get started, edit <code>pages/index.tsx</code> and save to reload.
-      </p>
-    </div>
+    <TabBar activeKey={location.pathname} onChange={value => setRouteActive(value)}>
+      {tabs.map(item => (
+        <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
+      ))}
+    </TabBar>
+  )
+}
+export default function HomePage() {
+  useEffect(() => {
+    history.push('/menu')
+  }, []);
+
+  return (
+    <AuthProvider authConfig={authConfig}>
+      <div className={styles.app}>
+        <div className={styles.top}>
+          <h1>小菜馆</h1>
+        </div>
+        <div className={styles.body}>
+          <Outlet />
+        </div>
+        <div className={styles.bottom}>
+          <Bottom />
+        </div>
+      </div>
+    </AuthProvider>
   );
 }
