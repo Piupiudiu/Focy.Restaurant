@@ -5,19 +5,21 @@ namespace Focy.Restaurant.Order
 {
     public class Order : FullAuditedEntity<Guid>
     {
-        public Guid MenuId { get; set; }
+        public string Name { get; set; }
 
-        public int Number { get; set; }
+        public string? Remark { get; set; }
 
+        public RestaurantEnum.OrderStatus Status { get; set; }
 
         protected Order() { }
 
-        public Order(Guid id, Guid menuId, int number)
+        public Order(Guid id, string name, string? remark, RestaurantEnum.OrderStatus status)
             : base(id)
         {
             Id = id;
-            MenuId = menuId;
-            Number = number;
+            Name = name;
+            Remark = remark;
+            Status = status;
         }
     }
 }
