@@ -9,6 +9,7 @@ namespace Focy.Restaurant.Controllers;
  */
 [Authorize]
 [ApiController]
+[IgnoreAntiforgeryToken]
 public abstract class RestaurantController : AbpControllerBase
 {
     protected RestaurantController()

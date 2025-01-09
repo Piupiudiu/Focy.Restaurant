@@ -1,9 +1,10 @@
 import { getMenuList, MenuItemDto } from "@/services/menu";
-import { Divider, DotLoading, Grid, InfiniteScroll, SearchBar } from "antd-mobile";
+import { Divider, DotLoading, Grid, InfiniteScroll, SearchBar, Toast } from "antd-mobile";
 import { AddCircleOutline } from "antd-mobile-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import '@/layouts/menu.less';
 import noImageJpg from '../assets/noImage.png';
+import { CreateShoppingCart } from "@/services/shoppingCart";
 
 const InfiniteScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -43,6 +44,23 @@ export default function MenuPage() {
     loadMore();
   }
 
+  const createShoppingCart = (menuId: string) => {
+    CreateShoppingCart(menuId).then(res => {
+      if (res) {
+        Toast.show({
+          icon: 'success',
+          content: '添加成功!',
+        })
+      }
+      else {
+        Toast.show({
+          icon: 'fail',
+          content: '添加失败!',
+        })
+      }
+    });
+  }
+
   return (
     <>
       <div style={{ backgroundColor: 'white', position: 'sticky', top: '0px' }}>
@@ -57,7 +75,7 @@ export default function MenuPage() {
                   <img src={item.imgUri ? `https://localhost:44366/${item.imgUri}` : noImageJpg} alt="" className="menu-item-image" />
                   <div className="menu-item-content">
                     <span>{item.name}</span>
-                    <AddCircleOutline className="menu-item-add" />
+                    <AddCircleOutline className="menu-item-add" onClick={() => createShoppingCart(item.id)} />
                   </div>
                 </div>
               </Grid.Item>

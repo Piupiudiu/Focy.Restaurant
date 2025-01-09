@@ -1,9 +1,5 @@
 import request from '@/utils/request';
-
-export interface PagedResultDto<T> {
-  items: T[];
-  totalCount: number;
-}
+import { PagedResultDto } from './commonType';
 
 export interface MenuItemDto {
   id: string;
