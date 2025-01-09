@@ -34,13 +34,14 @@ namespace Focy.Restaurant.Menu
         }
 
         [DisableEntityChangeTracking]
-        public async Task<PagedResultDto<MenuItemDto>> GetMenuItemsAsync(string? name, int skipCount = 0, int maxResultCount = 10)
+        public async Task<PagedResultDto<MenuItemDto>> GetMenuItemsAsync(string? name, int skipCount = 0, int maxResultCount = 10, bool isFront = false)
         {
             List<Menu> res = [.. (await menuRepository.GetQueryableAsync())
                 .WhereIf(!name.IsNullOrEmpty(), x => x.Name.Contains(name!))
+                .WhereIf(isFront, x => x.IsAvailable)
+                .OrderByDescending(x => x.CreationTime)
                 .Skip(skipCount)
-                .Take(maxResultCount)
-                .OrderByDescending(x => x.CreationTime)];
+                .Take(maxResultCount)];
             return new()
             {
                 Items = ObjectMapper.Map<List<Menu>, List<MenuItemDto>>(res),

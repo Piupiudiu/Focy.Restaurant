@@ -1,3 +1,4 @@
+import res from 'antd-mobile-icons/es/AaOutline';
 import { extend } from 'umi-request';
 
 // 创建 umi-request 实例
@@ -27,7 +28,7 @@ request.interceptors.request.use((url, options) => {
 // 响应拦截器
 request.interceptors.response.use(async (response) => {
   const data = await response.clone().json();
-  if (data.code !== 200) {
+  if (response.status !== 200) {
     console.error(data.message || '请求失败');
   }
   return response;

@@ -12,9 +12,18 @@
 
 .body {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 8px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin: 4px;
+  padding: 4px;
+  padding-top: 0px;
+  border-radius: 8px;
+  background: linear-gradient(to top, #F5F5F5 80%, white 100%);
+}
+
+.body ::-webkit-scrollbar {
+  display: none;
 }
 
 .bottom {

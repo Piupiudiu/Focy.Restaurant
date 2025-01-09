@@ -194,7 +194,7 @@ public class RestaurantHttpApiHostModule : AbpModule
         {
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "wwwroot"))
+                FileProvider = new PhysicalFileProvider(Path.Combine(AppContext.BaseDirectory + "wwwroot"))
             });
         }
         else

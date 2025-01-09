@@ -28,9 +28,9 @@ namespace Focy.Restaurant.Controllers.Menu
             return await menuAppService.DeleteMenuItemAsync(id);
         }
         [HttpGet("get")]
-        public async Task<PagedResultDto<MenuItemDto>> GetMenuItemsAsync(string? name, int skipCount = 0, int maxResultCount = 10)
+        public async Task<PagedResultDto<MenuItemDto>> GetMenuItemsAsync(string? name, int skipCount = 0, int maxResultCount = 10, bool isFront = false)
         {
-            return await menuAppService.GetMenuItemsAsync(name, skipCount, maxResultCount);
+            return await menuAppService.GetMenuItemsAsync(name, skipCount, maxResultCount, isFront);
         }
         [HttpPost("upload")]
         public async Task<string> UploadMenuImageAsync(Guid? id, IFormFile image)

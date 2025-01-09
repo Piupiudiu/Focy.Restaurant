@@ -16,5 +16,5 @@ export interface MenuItemDto {
 
 // 获取菜单列表
 export async function getMenuList(name: string | null = null, skipCount: number = 0, maxResultCount: number = 10) {
-  return request<PagedResultDto<MenuItemDto>>(`/menu/get?skipCount=${skipCount}&maxResultCount=${maxResultCount}` + (name == null ? "" : `&name=${name}`));
+  return request<PagedResultDto<MenuItemDto>>(`/menu/get?isFront=true&skipCount=${skipCount}&maxResultCount=${maxResultCount}` + (name == null ? "" : `&name=${name}`));
 }
