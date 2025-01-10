@@ -8,7 +8,7 @@ export interface ShoopingCartItemDto {
 }
 
 //添加商品到购物车
-export async function CreateShoppingCart(menuId: string) {
+export async function createShoppingCart(menuId: string) {
 	return request<boolean>(`/shopping-cart/create`, {
 		method: 'PUT',
 		data: { menuId },
@@ -16,12 +16,12 @@ export async function CreateShoppingCart(menuId: string) {
 }
 
 //获取购物车列表
-export async function GetShoppingCartList() {
+export async function getShoppingCartList() {
 	return request<ShoopingCartItemDto[]>(`/shopping-cart/get-all`);
 }
 
 //删除购物车商品
-export async function DeleteShoppingCart(id: string) {
+export async function deleteShoppingCart(id: string) {
 	return request<boolean>(`/shopping-cart/delete?id=${id}`, {
 		method: 'DELETE',
 	});

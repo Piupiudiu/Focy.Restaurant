@@ -4,7 +4,7 @@ import { AddCircleOutline } from "antd-mobile-icons";
 import { useState } from "react";
 import '@/layouts/menu.less';
 import noImageJpg from '../assets/noImage.png';
-import { CreateShoppingCart } from "@/services/shoppingCart";
+import { createShoppingCart } from "@/services/shoppingCart";
 
 const InfiniteScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -44,8 +44,8 @@ export default function MenuPage() {
     loadMore();
   }
 
-  const createShoppingCart = (menuId: string) => {
-    CreateShoppingCart(menuId).then(res => {
+  const onAddBtnClick = (menuId: string) => {
+    createShoppingCart(menuId).then(res => {
       if (res) {
         Toast.show({
           icon: 'success',
@@ -75,7 +75,7 @@ export default function MenuPage() {
                   <img src={item.imgUri ? `https://localhost:44366/${item.imgUri}` : noImageJpg} alt="" className="menu-item-image" />
                   <div className="menu-item-content">
                     <span>{item.name}</span>
-                    <AddCircleOutline className="menu-item-add" onClick={() => createShoppingCart(item.id)} />
+                    <AddCircleOutline className="menu-item-add" onClick={() => onAddBtnClick(item.id)} />
                   </div>
                 </div>
               </Grid.Item>

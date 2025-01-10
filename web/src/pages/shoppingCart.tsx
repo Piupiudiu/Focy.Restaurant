@@ -1,9 +1,10 @@
-import { DeleteShoppingCart, GetShoppingCartList, ShoopingCartItemDto } from "@/services/shoppingCart";
-import { Checkbox, CheckboxRef, List } from "antd-mobile";
+import { deleteShoppingCart, getShoppingCartList, ShoopingCartItemDto } from "@/services/shoppingCart";
+import { Button, Checkbox, CheckboxRef, List, Toast } from "antd-mobile";
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
 import noImageJpg from '../assets/noImage.png';
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
 import SwipeAction, { Action } from "antd-mobile/es/components/swipe-action";
+import { createOrder } from "@/services/order";
 
 const rightActions: Action[] = [
 	{
@@ -46,8 +47,40 @@ export default function ShoppingCartPage() {
 	const [shoppingCartList, setShoppingCartList] = useState<ShoopingCartItemDto[]>([]);
 	const [checkedValue, setCheckedValue] = useState<CheckboxValue[]>([]);
 
+	const onOrderBtnClick = () => {
+		console.log(checkedValue as string[]);
+		if (checkedValue.length === 0) {
+			Toast.show({
+				icon: 'fail',
+				content: '请选择要下单的菜单!',
+			})
+			return;
+		}
+		else {
+			createOrder({
+				name: '订单',
+				remark: '订单描述',
+				menuIds: checkedValue as string[],
+			}).then(res => {
+				if (res) {
+					Toast.show({
+						icon: 'success',
+						content: '下单成功!',
+					});
+					getShoppingCartList().then(res => setShoppingCartList(res));
+				}
+				else {
+					Toast.show({
+						icon: 'fail',
+						content: '下单失败!',
+					})
+				}
+			})
+		}
+	}
+
 	useEffect(() => {
-		GetShoppingCartList().then(res => setShoppingCartList(res));
+		getShoppingCartList().then(res => setShoppingCartList(res));
 	}, []);
 
 	return (
@@ -59,8 +92,8 @@ export default function ShoppingCartPage() {
 							<SwipeAction
 								key={item.id}
 								rightActions={rightActions}
-								onAction={() => DeleteShoppingCart(item.id).then(res => {
-									GetShoppingCartList().then(res => setShoppingCartList(res))
+								onAction={() => deleteShoppingCart(item.id).then(res => {
+									getShoppingCartList().then(res => setShoppingCartList(res))
 								})}
 							>
 								<ListItemWithCheckbox key={item.id} item={item} />
@@ -69,6 +102,20 @@ export default function ShoppingCartPage() {
 					}
 				</List>
 			</Checkbox.Group>
+			<div style={{ backgroundColor: '#d4e3f2', display: 'flex', justifyContent: 'space-between', marginBottom: '0px', paddingTop: '8px', paddingBottom: '8px', width: '100%', position: 'sticky', bottom: '0px' }}>
+				<Checkbox style={{ marginLeft: '12px' }} onChange={checked => {
+					if (checked) {
+						setCheckedValue(shoppingCartList.map(item => {
+							return item.menuId
+						}))
+					} else {
+						setCheckedValue([]);
+					}
+				}}>全选</Checkbox>
+				<Button style={{ borderRadius: '30px', marginRight: '16px' }} color='primary' size="small" fill='solid' onClick={onOrderBtnClick}>
+					下单
+				</Button>
+			</div>
 		</>
 	);
 }
