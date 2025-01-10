@@ -1,5 +1,5 @@
 import { deleteShoppingCart, getShoppingCartList, ShoopingCartItemDto } from "@/services/shoppingCart";
-import { Button, Checkbox, CheckboxRef, List, Toast } from "antd-mobile";
+import { Button, Checkbox, CheckboxRef, Dialog, Form, Input, List, Modal, TextArea, Toast } from "antd-mobile";
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
 import noImageJpg from '../assets/noImage.png';
 import { CheckboxValue } from "antd-mobile/es/components/checkbox";
@@ -46,9 +46,35 @@ const ListItemWithCheckbox: FC<
 export default function ShoppingCartPage() {
 	const [shoppingCartList, setShoppingCartList] = useState<ShoopingCartItemDto[]>([]);
 	const [checkedValue, setCheckedValue] = useState<CheckboxValue[]>([]);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [form] = Form.useForm();
+
+	const onFinish = (values: any) => {
+		createOrder({
+			name: values.name,
+			remark: values.remark,
+			menuIds: checkedValue as string[],
+		}).then(res => {
+			if (res) {
+				Toast.show({
+					icon: 'success',
+					content: '下单成功!',
+				});
+				getShoppingCartList().then(res => setShoppingCartList(res));
+			}
+			else {
+				Toast.show({
+					icon: 'fail',
+					content: '下单失败!',
+				})
+			}
+		});
+		form.resetFields();
+		setModalVisible(false);
+		setCheckedValue([]);
+	}
 
 	const onOrderBtnClick = () => {
-		console.log(checkedValue as string[]);
 		if (checkedValue.length === 0) {
 			Toast.show({
 				icon: 'fail',
@@ -57,25 +83,7 @@ export default function ShoppingCartPage() {
 			return;
 		}
 		else {
-			createOrder({
-				name: '订单',
-				remark: '订单描述',
-				menuIds: checkedValue as string[],
-			}).then(res => {
-				if (res) {
-					Toast.show({
-						icon: 'success',
-						content: '下单成功!',
-					});
-					getShoppingCartList().then(res => setShoppingCartList(res));
-				}
-				else {
-					Toast.show({
-						icon: 'fail',
-						content: '下单失败!',
-					})
-				}
-			})
+			setModalVisible(true);
 		}
 	}
 
@@ -116,6 +124,44 @@ export default function ShoppingCartPage() {
 					下单
 				</Button>
 			</div>
+			<Modal
+				visible={modalVisible}
+				closeOnMaskClick={true}
+				content={(
+					<Form
+						form={form}
+						mode="card"
+						layout='horizontal'
+						onFinish={onFinish}
+						footer={
+							<Button block type='submit' color='primary' size='large'>
+								提交
+							</Button>
+						}
+					>
+						<Form.Item
+							name='name'
+							label='订单名称'
+							rules={[{ required: true, message: '订单名称不能为空' }]}
+							style={{ fontSize: '15px'}}
+						>
+							<Input style={{ fontSize: '15px'}} onChange={console.log} placeholder='订单名称' />
+						</Form.Item>
+						<Form.Item style={{ fontSize: '15px'}} name='remark' label='备注' help='请输入少于三十个字的备注'>
+							<TextArea
+								placeholder='请输入备注'
+								maxLength={30}
+								rows={2}
+								showCount
+								style={{ fontSize: '15px'}}
+							/>
+						</Form.Item>
+					</Form>
+				)}
+				onClose={() => {
+					setModalVisible(false)
+				}}
+			/>
 		</>
 	);
 }

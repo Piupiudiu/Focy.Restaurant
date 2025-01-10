@@ -51,21 +51,23 @@ namespace Focy.Restaurant.Order
                 .Skip(skipCount)
                 .Take(maxResultCount)];
             var orderDetails = (from o in await orderRepository.GetQueryableAsync()
-                                where orders.Select(x => x.Id).Contains(o.Id)
-                                join oi in await orderItemRepository.GetQueryableAsync() on o.Id equals oi.OrderId
-                                join m in await menuRepository.GetQueryableAsync() on oi.MenuId equals m.Id
-                                select new
-                                {
-                                    o.Id,
-                                    o.Name,
-                                    o.Remark,
-                                    o.Status,
-                                    MenuName = m.Name,
-                                    Desription = m.Description,
-                                    m.ImgUri,
-                                    m.Uri,
-                                    m.IsAvailable
-                                }).Skip(skipCount).Take(maxResultCount).GroupBy(x => x.Id);
+                        where orders.Select(x => x.Id).Contains(o.Id)
+                        join oi in await orderItemRepository.GetQueryableAsync() on o.Id equals oi.OrderId
+                        join m in await menuRepository.GetQueryableAsync() on oi.MenuId equals m.Id
+                        select new
+                        {
+                            o.Id,
+                            o.Name,
+                            o.Remark,
+                            o.Status,
+                            o.CreationTime,
+                            MenuId = m.Id,
+                            MenuName = m.Name,
+                            m.Description,
+                            m.ImgUri,
+                            m.Uri,
+                            m.IsAvailable
+                        }).GroupBy(x => x.Id).OrderByDescending(x => x.Key);
             return new()
             {
                 Items = [.. orderDetails.Select(x => new OrderDetailDto
@@ -76,9 +78,9 @@ namespace Focy.Restaurant.Order
                     Status = x.First().Status,
                     Menus = x.Select(y => new MenuItemDto
                     {
-                        Id = y.Id,
+                        Id = y.MenuId,
                         Name = y.MenuName,
-                        Description = y.Desription,
+                        Description = y.Description,
                         ImgUri = y.ImgUri,
                         Uri = y.Uri,
                         IsAvailable = y.IsAvailable
