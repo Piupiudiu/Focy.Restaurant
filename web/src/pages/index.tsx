@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'umi';
 import styles from '../layouts/index.less';
-import { TabBar } from 'antd-mobile';
-import { FC, useContext, useEffect } from 'react';
+import { Modal, TabBar } from 'antd-mobile';
+import { FC, useContext, useEffect, useState } from 'react';
 import { FileOutline, HandPayCircleOutline, ShopbagOutline, UserOutline } from 'antd-mobile-icons';
 import { history, useLocation } from 'umi';
 import { AuthContext, AuthProvider, IAuthContext, TAuthConfig, TRefreshTokenExpiredEvent } from 'react-oauth2-code-pkce';
@@ -54,10 +54,11 @@ const Bottom: FC = () => {
 }
 export default function HomePage() {
   const { token, tokenData } = useContext<IAuthContext>(AuthContext)
-  
-  useEffect(() => {
-    history.push('/menu')
-  }, []);
+  const [visible, setVisible] = useState<boolean>(true);
+
+  // useEffect(() => {
+  //   history.push('/menu')
+  // }, []);
 
   return (
     <AuthProvider authConfig={authConfig}>
@@ -72,6 +73,7 @@ export default function HomePage() {
           <Bottom />
         </div>
       </div>
+      <Modal visible={visible} content="👏欢迎来到凉皮Sir的小菜馆!!!👏" onClose={() => { history.push("/menu"); setVisible(false) }} closeOnMaskClick={true} />
     </AuthProvider>
   );
 }

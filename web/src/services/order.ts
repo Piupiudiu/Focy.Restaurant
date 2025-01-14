@@ -25,6 +25,24 @@ export async function createOrder(data: OrderCreateDto) {
 }
 
 //查询订单
-export async function getOrderList(skipCount: number = 0, maxResultCount: number = 10) {
-	return request<PagedResultDto<OrderDto>>(`/order/get?skipCount=${skipCount}&maxResultCount=${maxResultCount}`);
+export async function getOrderList(skipCount: number = 0, maxResultCount: number = 10, status: number | null = null) {
+	return request<PagedResultDto<OrderDto>>(`/order/get?skipCount=${skipCount}&maxResultCount=${maxResultCount}${status == null ? "" : `&status=${status}`}`);
+}
+
+//修改订单状态
+export async function updateOrderStatus(id: string, status: number) {
+	return request<boolean>(`/order/update`, {
+		method: 'PUT',
+		data: {
+			id,
+			status
+		}
+	});
+}
+
+//删除订单
+export async function deleteOrder(id: string) {
+	return request<boolean>(`/order/delete?id=${id}`, {
+		method: 'DELETE',
+	});
 }

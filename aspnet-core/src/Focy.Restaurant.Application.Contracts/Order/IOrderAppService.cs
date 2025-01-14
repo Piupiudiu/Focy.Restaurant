@@ -13,6 +13,6 @@ namespace Focy.Restaurant.Order
 
         Task<bool> UpdateOrderAsync(OrderUpdateDto input);
 
-        Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10);
+        Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10, RestaurantEnum.OrderStatus? status = null);
     }
 }

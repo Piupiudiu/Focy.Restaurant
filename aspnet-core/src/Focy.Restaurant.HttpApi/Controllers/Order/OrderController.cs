@@ -28,9 +28,9 @@ namespace Focy.Restaurant.Controllers.Order
         }
 
         [HttpGet("get")]
-        public async Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10)
+        public async Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10, RestaurantEnum.OrderStatus? status = null)
         {
-            return await orderAppService.GetOrdersAsync(skipCount, maxResultCount);
+            return await orderAppService.GetOrdersAsync(skipCount, maxResultCount, status);
         }
     }
 }

@@ -43,10 +43,11 @@ namespace Focy.Restaurant.Order
             return true;
         }
 
-        public async Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10)
+        public async Task<PagedResultDto<OrderDetailDto>> GetOrdersAsync(int skipCount = 0, int maxResultCount = 10, RestaurantEnum.OrderStatus? status = null)
         {
             List<Order> orders = [.. (await orderRepository.GetQueryableAsync())
                 .Where(x => x.CreatorId == CurrentUser.Id)
+                .WhereIf(status.HasValue, x => x.Status == status)
                 .OrderByDescending(x => x.CreationTime)
                 .Skip(skipCount)
                 .Take(maxResultCount)];

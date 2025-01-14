@@ -1,4 +1,3 @@
-import res from 'antd-mobile-icons/es/AaOutline';
 import { extend } from 'umi-request';
 
 // 创建 umi-request 实例
