@@ -37,6 +37,7 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Account.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Focy.Restaurant;
 
@@ -79,6 +80,11 @@ public class RestaurantAuthServerModule : AbpModule
             {
                 serverBuilder.AddProductionEncryptionAndSigningCertificate("openiddict.pfx", "803f811b-3c71-4ac0-a145-7970554dcdbe");
             });
+
+            PreConfigure<OpenIddictBuilder>(builder =>
+            {
+                builder.AddServer().UseAspNetCore().DisableTransportSecurityRequirement();
+            });
         }
     }
 
@@ -86,6 +92,13 @@ public class RestaurantAuthServerModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        // 配置 Cookie 政策
+        Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.None; // 设置为 Lax 或 Strict 或 None
+            options.Secure = CookieSecurePolicy.None;
+        });
 
         Configure<AbpLocalizationOptions>(options =>
         {

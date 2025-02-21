@@ -8,8 +8,10 @@ import { AuthContext, AuthProvider, IAuthContext, TAuthConfig, TRefreshTokenExpi
 
 const authConfig: TAuthConfig = {
   clientId: 'Restaurant_Web',
-  authorizationEndpoint: 'https://localhost:44382/connect/authorize',
-  tokenEndpoint: 'https://localhost:44382/connect/token',
+  // authorizationEndpoint: 'https://localhost:44382/connect/authorize',
+  // tokenEndpoint: 'https://localhost:44382/connect/token',
+  authorizationEndpoint: 'http://47.103.45.230/connect/authorize',
+  tokenEndpoint: 'http://47.103.45.230/connect/token',
   redirectUri: 'http://localhost:8000',
   scope: 'Restaurant offline_access',
   onRefreshTokenExpire: (event: TRefreshTokenExpiredEvent) => event.logIn(undefined, undefined, "popup"),
