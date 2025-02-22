@@ -93,10 +93,10 @@ public class RestaurantAuthServerModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
-        // 配置 Cookie 政策
+        // allow http site to set cookie
         Configure<CookiePolicyOptions>(options =>
         {
-            options.MinimumSameSitePolicy = SameSiteMode.None; // 设置为 Lax 或 Strict 或 None
+            options.MinimumSameSitePolicy = SameSiteMode.None;
             options.Secure = CookieSecurePolicy.None;
         });
 
