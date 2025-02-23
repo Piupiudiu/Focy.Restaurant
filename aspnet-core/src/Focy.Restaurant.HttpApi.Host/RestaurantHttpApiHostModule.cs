@@ -164,10 +164,10 @@ public class RestaurantHttpApiHostModule : AbpModule
             options.AddDefaultPolicy(builder =>
             {
                 builder
-                    .WithOrigins(configuration["App:CorsOrigins"]?
-                        .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                        .Select(o => o.RemovePostFix("/"))
-                        .ToArray() ?? Array.Empty<string>())
+                    // .WithOrigins(configuration["App:CorsOrigins"]?
+                    //     .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    //     .Select(o => o.RemovePostFix("/"))
+                    //     .ToArray() ?? Array.Empty<string>())
                     .WithAbpExposedHeaders()
                     .SetIsOriginAllowedToAllowWildcardSubdomains()
                     .AllowAnyHeader()
@@ -190,17 +190,17 @@ public class RestaurantHttpApiHostModule : AbpModule
         app.UseAbpRequestLocalization();
         app.UseCorrelationId();
 
-        if (env.IsDevelopment())
-        {
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(AppContext.BaseDirectory + "wwwroot"))
-            });
-        }
-        else
-        {
+        // if (env.IsDevelopment())
+        // {
+        //     app.UseStaticFiles(new StaticFileOptions()
+        //     {
+        //         FileProvider = new PhysicalFileProvider(Path.Combine(AppContext.BaseDirectory + "wwwroot"))
+        //     });
+        // }
+        // else
+        // {
             app.UseStaticFiles();
-        }
+        // }
 
         app.MapAbpStaticAssets();
         app.UseRouting();
